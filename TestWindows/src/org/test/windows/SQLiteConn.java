@@ -13,8 +13,8 @@ public class SQLiteConn {
 	
 	private static final String PATH = "jdbc:sqlite:C:\\Users\\Michael Scott\\eclipse-workspace\\TestWindows\\DB_Users\\users.db";
 	
-	/* https://www.sqlitetutorial.net/sqlite-java/sqlite-jdbc-driver/
-	 *
+	/* 
+	 * https://www.sqlitetutorial.net/sqlite-java/sqlite-jdbc-driver/
 	 */
 	private Connection connect() {
 		Connection conn = null;
