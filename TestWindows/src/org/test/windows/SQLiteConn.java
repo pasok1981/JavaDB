@@ -33,7 +33,7 @@ public class SQLiteConn {
 			 PreparedStatement stmt = conn.prepareStatement(query)) {
 				 stmt.setString(1, username);
 				 stmt.setString(2, pass);
-			 
+			  
 				 ResultSet rs = stmt.executeQuery();
 				 
 				 if (!rs.isBeforeFirst()) {
