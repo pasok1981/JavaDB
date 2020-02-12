@@ -5,17 +5,28 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
@@ -76,13 +87,13 @@ public class WindowApp {
 		
 		try {
 		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if ("Windows".equals(info.getName())) {
+		        if ("Metal".equals(info.getName())) {
 		            UIManager.setLookAndFeel(info.getClassName());
 		            break;
 		        }
 		    }
 		} catch (Exception e) {
-		    // If Nimbus is not available, you can set the GUI to another look and feel.
+		    // If Metal is not available, you can set the GUI to another look and feel.
 			e.printStackTrace();
 		}
 		
@@ -90,10 +101,12 @@ public class WindowApp {
 		lblNewLabel.setFont(new Font("SansSerif", Font.BOLD, 19));
 		
 		JLabel lblUsername = new JLabel("Username : ");
-		lblUsername.setToolTipText("Enter your username");
+		lblUsername.setToolTipText("");
 		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		mailField = new JTextField();
+		mailField.setToolTipText("Enter your username");
+		lblUsername.setLabelFor(mailField);
 		mailField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		mailField.setColumns(20);
 		
@@ -111,6 +124,8 @@ public class WindowApp {
 		errLabel.setVisible(false);
 		
 		JButton btnLogin = new JButton("Log in");
+		btnLogin.setBackground(Color.LIGHT_GRAY);
+		btnLogin.setToolTipText("Click to log in");
 		
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -162,49 +177,81 @@ public class WindowApp {
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(207)
-							.addComponent(lblNewLabel))
-						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(78)
-							.addComponent(lblUsername)
-							.addGap(84)
-							.addComponent(mailField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addComponent(lblUsername))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(82)
-							.addComponent(lblPassword)
-							.addGap(87)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(btnLogin, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
-								.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(errLabel, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE))))
-					.addGap(98))
+							.addComponent(lblPassword)))
+					.addGap(46)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(errLabel, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnLogin, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE)
+						.addComponent(mailField, GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+						.addComponent(passwordField, 0, 0, Short.MAX_VALUE))
+					.addContainerGap(182, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
+				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 					.addGap(30)
-					.addComponent(lblNewLabel)
-					.addGap(61)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(3)
-							.addComponent(lblUsername))
+					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblUsername)
 						.addComponent(mailField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(35)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(3)
-							.addComponent(lblPassword))
+					.addGap(41)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblPassword)
 						.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(39)
+					.addGap(33)
 					.addComponent(btnLogin, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
+					.addGap(27)
 					.addComponent(errLabel, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(24, Short.MAX_VALUE))
+					.addGap(24))
 		);
 		frmSignIn.getContentPane().setLayout(groupLayout);
 		frmSignIn.setBounds(100, 100, 594, 373);
 		frmSignIn.setLocationRelativeTo(null);
 		frmSignIn.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBorder(BorderFactory.createEmptyBorder());
+		frmSignIn.setJMenuBar(menuBar);
+		
+		JMenu mnMenu = new JMenu("Menu");
+		mnMenu.setBorder(BorderFactory.createRaisedSoftBevelBorder());
+		mnMenu.setHorizontalAlignment(SwingConstants.LEFT);
+		menuBar.add(mnMenu);
+		
+		JMenuItem mntmExitalt = new JMenuItem("Exit");
+		mntmExitalt.setHorizontalAlignment(SwingConstants.LEFT);
+		
+		mntmExitalt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frmSignIn.dispatchEvent(new WindowEvent(frmSignIn, WindowEvent.WINDOW_CLOSING));
+			}
+		});
+		
+		mntmExitalt.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		mntmExitalt.setHorizontalAlignment(SwingConstants.LEFT);
+		mntmExitalt.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_MASK));
+		mnMenu.add(mntmExitalt);
+		
+		JMenu mnHelp = new JMenu("Help");
+		menuBar.add(mnHelp);
+		
+		JMenuItem mntmGetHelp = new JMenuItem("Get Help");
+		mntmGetHelp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				final String info = "Enter your credentials and gain access to the Database in a secure way.\nAll your"+
+						"sensitive information is encrypted via AES-128 bit encryption standards.\n\n Copyright \u00a9 " +
+						Calendar.getInstance().get(Calendar.YEAR);
+				JOptionPane.showMessageDialog(mntmGetHelp, info, "Help", JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		
+		mntmGetHelp.setHorizontalAlignment(SwingConstants.LEFT);
+		mnHelp.add(mntmGetHelp);
 	}
 }

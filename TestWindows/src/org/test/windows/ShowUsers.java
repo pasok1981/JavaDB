@@ -107,7 +107,16 @@ public class ShowUsers {
 		
 		String column_names[]= {"ID","Username","Password"};
 		table_model = new DefaultTableModel(0, 0);
-		table = new JTable();
+		
+		table = new JTable() {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			};
+		};
+		
 		table_model.setColumnIdentifiers(column_names);
 		
 		table.setModel(table_model);
@@ -116,18 +125,16 @@ public class ShowUsers {
 		JScrollPane scrollPane = new  JScrollPane(table);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 		scrollPane.setViewportBorder(new CompoundBorder());
-		
+
+		((DefaultTableCellRenderer)table.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 		table.getColumnModel().getColumn(0).setCellRenderer( centerRenderer );
 		table.getColumnModel().getColumn(0).setPreferredWidth(30);
 		table.getColumnModel().getColumn(1).setPreferredWidth(150);
 		table.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
 		table.getColumnModel().getColumn(2).setPreferredWidth(150);
 		table.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );
-		
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		table.setColumnSelectionAllowed(true);
-		table.setCellSelectionEnabled(true);
 		panel.add(scrollPane);
 		frame.getContentPane().setLayout(groupLayout);
 		frame.setLocationRelativeTo(null);

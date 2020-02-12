@@ -10,12 +10,9 @@ import java.sql.Statement;
 import javax.swing.table.DefaultTableModel;
 
 public class SQLiteConn {
-	
+
 	private static final String PATH = "jdbc:sqlite:C:\\Users\\Michael Scott\\eclipse-workspace\\TestWindows\\DB_Users\\users.db";
 	
-	/* 
-	 * https://www.sqlitetutorial.net/sqlite-java/sqlite-jdbc-driver/
-	 */
 	private Connection connect() {
 		Connection conn = null;
 		try {
@@ -33,7 +30,7 @@ public class SQLiteConn {
 			 PreparedStatement stmt = conn.prepareStatement(query)) {
 				 stmt.setString(1, username);
 				 stmt.setString(2, pass);
-			  
+			 
 				 ResultSet rs = stmt.executeQuery();
 				 
 				 if (!rs.isBeforeFirst()) {
